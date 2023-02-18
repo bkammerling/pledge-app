@@ -18,7 +18,7 @@ To use this project you have to have a Storyblok account. If you don't have one 
 ### 1. Clone the repo
 
 ```sh
-  $ git clone THIS_REPO_URL
+  $ git clone https://github.com/bkammerling/storyblok-nextjs-bootstrap-starter.git
 ```
 
 ### 2. Install all dependecies 
@@ -37,7 +37,7 @@ Then create the 2 components that have been setup in the code:
 
 2. Feature - _feature_
 - Title - _title_: text
-- Text - _text: richtext
+- Text - _text_: richtext
 - Image - _image_: asset
 
 I've also built Grid and Column components but these are just the basics for you to either built upon or delete.
