@@ -1,7 +1,7 @@
-/* Override bootstrap theme colours here:
+/* Override bootstrap theme colours here: */
 
 $theme-colors: (
-  'primary': #093ea8,
+  'primary': #eb5c2e,
   'secondary': #3bd7ec,
   'success': #22e11c,
   'info': #d9ff50,
@@ -11,6 +11,6 @@ $theme-colors: (
   'dark': #000103,
 );
 
-*/
+$enable-rounded: false;
 
 @import '/node_modules/bootstrap/scss/bootstrap.scss';

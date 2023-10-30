@@ -10,18 +10,14 @@ export default function Page({ story }) {
   story = useStoryblokState(story);
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>{story ? story.name : "My Site"}</title>
+        <title>{story ? story.name : "Fund for Global Human Rights Pledges"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header>
-        <h1>{story ? story.name : "My Site"}</h1>
-      </header>
-
       <StoryblokComponent blok={story.content} />
-    </div>
+    </>
   );
 }
 

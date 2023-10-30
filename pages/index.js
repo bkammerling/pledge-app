@@ -12,7 +12,7 @@ export default function Home({ story }) {
   return (
     <>
       <Head>
-        <title>NextJS Storyblok + Bootstrap Starter</title>
+        <title>Fund for Global Human Rights Pledge Platform</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

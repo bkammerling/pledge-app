@@ -8,6 +8,7 @@ import Grid from "../components/Grid";
 import Hero from "../components/Hero";
 import Page from "../components/Page";
 import Feature from '../components/Feature';
+import Pledge from '../components/Pledge';
 
 const components = {
   column: Column,
@@ -15,6 +16,7 @@ const components = {
   hero: Hero,
   page: Page,
   feature: Feature,
+  pledge: Pledge,
 };
 
 storyblokInit({
