@@ -6,7 +6,7 @@ import {
   StoryblokComponent,
 } from "@storyblok/react";
 
-export default function Page({ story }) {
+export default function Page({ story = null }) {
   story = useStoryblokState(story);
 
   return (
@@ -21,12 +21,14 @@ export default function Page({ story }) {
   );
 }
 
-export async function getStaticProps({ params }) {
-  let slug = params.slug ? params.slug.join("/") : "home";
+export async function getStaticProps( context ) {
+  let slug = context.params.slug ? context.params.slug.join("/") : "home";
+  let sbParams = {};
 
-  let sbParams = {
-    version: "draft", // or 'published'
-  };
+  if (context.preview) {
+    sbParams.version = "draft"
+    sbParams.cv = Date.now()
+  }
 
   const storyblokApi = getStoryblokApi();
   let { data } = await storyblokApi.get(`cdn/stories/${slug}`, sbParams);

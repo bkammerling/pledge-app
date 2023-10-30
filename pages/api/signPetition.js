@@ -70,14 +70,16 @@ export default async (req, res) => {
     try {
       const response = await mailchimp.lists.setListMember("2d457f53b0", subscriberData.email_address, subscriberData);
       if (!response.id) {
-        console.log('isue adding subscriber not added')
-        return res.status(400).json({ message: 'issue adding email to signatures.'})
+        console.log('issue adding subscriber not added')
+        return res.status(400).json({ message: 'Mailchimp returned but unknown error'})
       }
       console.log('added subscriber')
-      return res.status(201).json({ message: 'Email successfully added to signatures.'})
+      const eventResponse = await mailchimp.lists.createListMemberEvent("2d457f53b0", subscriberData.email_address, { name: "Signed_pledge", properties: { tag } });
+      return res.status(201).json({ message: 'Email successfully added to signatures'})
     } catch (error) {
+      console.log(error.response?.text);
       console.log(error);
-      return res.status(500).json({ message: 'Internal custom API error.'})
+      return res.status(500).json({ message: `Error calling Mailchimp`, detail: `${error.response?.body?.detail}`})
     }
   };  
   addSubscriber();
