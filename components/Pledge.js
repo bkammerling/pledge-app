@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Image from 'next/image';
 import { render } from 'storyblok-rich-text-react-renderer';
 import PledgeDonate from './PledgeDonate';
 import PledgeShare from './PledgeShare';
@@ -63,20 +64,74 @@ const Pledge = ({ blok, ipDeets, tag }) => {
   }
 
   const afterSuccessfulSign = () => {
-    donateRef.current?.scrollIntoView();
     setStep(2);
   }
 
   const afterDonate = () => {
-    shareRef.current?.scrollIntoView();
     setStep(3);
   }
+
+  useEffect(() => {
+    if (step == 2) {
+      donateRef.current?.scrollIntoView();
+    } else if (step == 3) {
+      shareRef.current?.scrollIntoView();
+    }
+  }, [step]);
   
   return (
     <>
+      {/* BEGIN STEPS */}
+      <div className={`steps ${step >= 2 ? 'show': ''}`}>
+        <div className="step-wrapper">
+          <span class={`step-icon ${step <= 1 ? 'step-icon-psuedo' : ''}`}>
+            {step >= 2 && 
+              <Image
+                priority
+                src='/check-solid.svg'
+                height={18}
+                width={18}
+                alt="Orange solid check mark or tick"
+              />
+            }
+          </span>
+          <span className="step-label">Pledge</span>
+        </div>
+        <div className="step-wrapper">
+          <span class={`step-icon ${step <= 2 ? 'step-icon-psuedo' : ''}`}>
+          {step >= 3 && 
+              <Image
+                priority
+                src='/check-solid.svg'
+                height={18}
+                width={18}
+                alt="Orange solid check mark or tick"
+              />
+            }
+          </span>
+          <span className="step-label">Donate</span>
+        </div>
+        <div className="step-wrapper">
+          <span class={`step-icon ${step <= 3 ? 'step-icon-psuedo' : ''}`}>
+            {step >= 4 && 
+              <Image
+                priority
+                src='/check-solid.svg'
+                height={18}
+                width={18}
+                alt="Orange solid check mark or tick"
+              />
+            }</span>
+          <span className="step-label">Share</span>
+        </div>
+      </div>
+      {/* END STEPS */}
+
+      {/* BEGIN PLEDGE */}
       <section className="section pledge min-vh-100 py-4">
         <div className="container mt-4">
           <div className="row">
+            {/* Col */}
             <div className="col-md-7 mb-9 mb-lg-0">
               {/* Heading and Image */}
               <div className="mb-5">
@@ -97,8 +152,10 @@ const Pledge = ({ blok, ipDeets, tag }) => {
               </div>
               {/* End Heading */}
             </div>
+            {/* End Col */}
+            {/* Col */}
             <div className="col-md-5">
-              {/* Card */}
+              
               <div className="card">
                 <div className="card-body">
                   <div className="progress bg-primary p-1">
@@ -169,20 +226,24 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                     <p className="form-text">View the Fund for Global Human Right's privacy policy.</p>
                     
                   </form>
-                  {/* End Form */}
+        
                 </div>
-                {/* End Card */}
               </div>
             </div>
             {/* End Col */}
           </div>
-          {/* End Row */}
         </div>
-        {/* End Contact Form */}
-
+      {/* END PLEDGE */}
       </section>
-      <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
-      <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} />
+      { step >= 2 ?
+        <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
+        : null
+      }
+      { step >= 3 ?
+        <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} />
+        : null
+      }
+      
     </>
   );
 };
