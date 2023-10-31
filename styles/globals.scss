@@ -1,8 +1,5 @@
 // Custom Styles
 
-.btn-primary {
-  //color: white;
-}
 
 .navbar {
   background: rgba(255,255,255,0.7);
@@ -11,6 +8,10 @@
 
 section  {
   background-size: cover;
+}
+
+.donate-card, .share-card {
+  min-width: 400px;
 }
 
 .donate-card {

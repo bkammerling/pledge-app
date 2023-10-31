@@ -8,7 +8,7 @@ const PledgeShare = ({ innerRef, blok, name }) => {
 
         <div className="container">
           <div className="d-flex flex-column justify-content-center align-items-center py-5 vh-100 text-center">
-            <div className="card donate-card p-3">
+            <div className="card share-card p-3">
               <div className="card-body">
                 <h2>{ name }{ name ? " - " : ""}{ blok.share_heading }</h2>
                 <div className="mt-3 mb-4">
