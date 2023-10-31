@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { render } from 'storyblok-rich-text-react-renderer';
 import PledgeDonate from './PledgeDonate';
+import PledgeShare from './PledgeShare';
 
 const Pledge = ({ blok, ipDeets, tag }) => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,10 @@ const Pledge = ({ blok, ipDeets, tag }) => {
   const [state, setState] = useState('idle');
   const [signees, setSignees] = useState(7142);
   const [error, setError] = useState('');
-  const [nextRef, setNextRef] = useState(null);
+  const [step, setStep] = useState(1);
+
+  const donateRef = useRef();
+  const shareRef = useRef();
 
   const searchParams = useSearchParams()
   const utmSource = searchParams.get('utm_source') || "";
@@ -44,7 +48,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
           setError(json.detail);
         } else {
           setState('Success')
-          afterSuccessfulSign();
+          //afterSuccessfulSign();
           setSignees(signees+1);
         }
       })    
@@ -58,13 +62,19 @@ const Pledge = ({ blok, ipDeets, tag }) => {
     }
   }
 
-  function afterSuccessfulSign() {
+  const afterSuccessfulSign = () => {
+    donateRef.current?.scrollIntoView();
+    setStep(2);
+  }
 
+  const afterDonate = () => {
+    shareRef.current?.scrollIntoView();
+    setStep(3);
   }
   
   return (
     <>
-      <section className="section pledge">
+      <section className="section pledge min-vh-100 py-4">
         <div className="container mt-4">
           <div className="row">
             <div className="col-md-7 mb-9 mb-lg-0">
@@ -80,6 +90,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                           `}
                   sizes="(max-width: 767px) 100%, 680px"
                   className="img-fluid my-3"
+                  onClick={afterSuccessfulSign}
                 />
                 }
                 { render(blok.content) }
@@ -123,21 +134,24 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                       <label htmlFor="emailInput">Email address</label>
                       <div className="invalid-feedback">Email address has already signed pledge</div>
                     </div>
-                    <div>
-                      <p className="form-text mb-2">We are depending on people like you to stand up for what's right! Can we email you occasionally with important campaign updates?</p>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="optin" id="optinYes" value="yes" onChange={(e) => setFormData({...formData, optin: e.target.value})} required />
-                        <label className="form-check-label" htmlFor="optinYes">
-                          Yes
-                        </label>
+                    { blok.show_optin ? 
+                      <div>
+                        <p className="form-text mb-2">We are depending on people like you to stand up for what's right! Can we email you occasionally with important campaign updates?</p>
+                        <div className="form-check form-check-inline">
+                          <input className="form-check-input" type="radio" name="optin" id="optinYes" value="yes" onChange={(e) => setFormData({...formData, optin: e.target.value})} required />
+                          <label className="form-check-label" htmlFor="optinYes">
+                            Yes
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <input className="form-check-input" type="radio" name="optin" id="optinNo" value="no" onChange={(e) => setFormData({...formData, optin: e.target.value})}  />
+                          <label className="form-check-label" htmlFor="optinNo">
+                            No
+                          </label>
+                        </div>
                       </div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="optin" id="optinNo" value="no" onChange={(e) => setFormData({...formData, optin: e.target.value})}  />
-                        <label className="form-check-label" htmlFor="optinNo">
-                          No
-                        </label>
-                      </div>
-                    </div>
+                      : null
+                    }
                     { state == "Other error" ?
                         <div className="d-block mt-3 invalid-feedback">We had an issue: <span id="error-text">{error}</span></div>
                         : null
@@ -167,7 +181,8 @@ const Pledge = ({ blok, ipDeets, tag }) => {
         {/* End Contact Form */}
 
       </section>
-      <PledgeDonate blok={blok} />
+      <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
+      <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} />
     </>
   );
 };
