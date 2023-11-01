@@ -12,8 +12,9 @@ const Pledge = ({ blok, ipDeets, tag }) => {
     email: "",
     optin: ""
   });
-  const [state, setState] = useState('idle');
-  const [signees, setSignees] = useState(7142);
+  const [state, setState] = useState('startup');
+  const [signees, setSignees] = useState(0);
+  const [target, setTarget] = useState(1000);
   const [error, setError] = useState('');
   const [step, setStep] = useState(1);
 
@@ -24,10 +25,44 @@ const Pledge = ({ blok, ipDeets, tag }) => {
   const utmSource = searchParams.get('utm_source') || "";
   const utmCampaign = searchParams.get('utm_campaign') || "";
 
+  useEffect(() => {
+    const getSignees = async () => {
+      await fetch("/api/getSignees", { 
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tag }), 
+      })
+      .then(response => response.json())  // convert to json
+      .then(json => {
+        console.log(json)
+        let returnedCount = json.signees;
+        if(returnedCount < 100) {
+          returnedCount = returnedCount+100;
+        } else if(returnedCount >= 900 && returnedCount < 2000) {
+          setTarget(2500);
+        } else if(returnedCount >= 2000 && returnedCount < 4500) {
+          setTarget(5000);
+        } else {
+          setTarget(10000);
+        }
+        
+        setSignees(returnedCount);
+        setState('idle');
+      })    
+      .catch(err => { 
+        console.log('Request Failed', err)
+        setState('Error')
+      });   
+    }
+    getSignees(); 
+  }, []);
+
 
   const signPledge = async (e) => {  
     e.preventDefault();
-    setState('Loading')
+    setState('loading')
     
     
     try {
@@ -49,8 +84,8 @@ const Pledge = ({ blok, ipDeets, tag }) => {
           setError(json.detail);
         } else {
           setState('Success')
-          //afterSuccessfulSign();
           setSignees(signees+1);
+          afterSuccessfulSign();
         }
       })    
       .catch(err => { 
@@ -64,6 +99,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
   }
 
   const afterSuccessfulSign = () => {
+
     setStep(2);
   }
 
@@ -84,10 +120,9 @@ const Pledge = ({ blok, ipDeets, tag }) => {
       {/* BEGIN STEPS */}
       <div className={`steps ${step >= 2 ? 'show': ''}`}>
         <div className="step-wrapper">
-          <span class={`step-icon ${step <= 1 ? 'step-icon-psuedo' : ''}`}>
+          <span className={`step-icon ${step <= 1 ? 'step-icon-psuedo' : ''}`}>
             {step >= 2 && 
               <Image
-                priority
                 src='/check-solid.svg'
                 height={18}
                 width={18}
@@ -98,10 +133,9 @@ const Pledge = ({ blok, ipDeets, tag }) => {
           <span className="step-label">Pledge</span>
         </div>
         <div className="step-wrapper">
-          <span class={`step-icon ${step <= 2 ? 'step-icon-psuedo' : ''}`}>
+          <span className={`step-icon ${step <= 2 ? 'step-icon-psuedo' : ''}`}>
           {step >= 3 && 
               <Image
-                priority
                 src='/check-solid.svg'
                 height={18}
                 width={18}
@@ -112,10 +146,9 @@ const Pledge = ({ blok, ipDeets, tag }) => {
           <span className="step-label">Donate</span>
         </div>
         <div className="step-wrapper">
-          <span class={`step-icon ${step <= 3 ? 'step-icon-psuedo' : ''}`}>
+          <span className={`step-icon ${step <= 3 ? 'step-icon-psuedo' : ''}`}>
             {step >= 4 && 
               <Image
-                priority
                 src='/check-solid.svg'
                 height={18}
                 width={18}
@@ -137,16 +170,15 @@ const Pledge = ({ blok, ipDeets, tag }) => {
               <div className="mb-5">
                 <h1 className="h2">{blok.title}</h1>
                 {blok.image && 
-                <img 
-                  src={`${blok.image.filename}/m/800x450/smart`}
-                  srcSet={`${blok.image.filename}/m/400x225/smart 400w,
-                          ${blok.image.filename}/m/600x338/smart 900w,
-                          ${blok.image.filename}/m/800x450/smart 1200w
-                          `}
-                  sizes="(max-width: 767px) 100%, 680px"
-                  className="img-fluid my-3"
-                  onClick={afterSuccessfulSign}
-                />
+                  <Image
+                    priority
+                    src={`${blok.image.filename}/m/1600x900/smart`}
+                    height={1600}
+                    width={900}
+                    className='img-fluid my-3'
+                    alt="Orange solid check mark or tick"
+                    onClick={afterSuccessfulSign}
+                  />
                 }
                 { render(blok.content) }
               </div>
@@ -159,10 +191,10 @@ const Pledge = ({ blok, ipDeets, tag }) => {
               <div className="card">
                 <div className="card-body">
                   <div className="progress bg-primary p-1">
-                    <div className="progress-bar bg-dark" role="progressbar" style={{width: '75%'}} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} />
+                    <div className="progress-bar bg-dark" role="progressbar" style={{width: `${(signees / target) * 100}%` }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} />
                   </div>
-                  <h3 className="card-header-title mb-0 mt-2 h1">{signees.toLocaleString()}</h3>
-                  <h5 className="card-header-title mb-4">Help us get to 10,000</h5>
+                  <h3 className={`card-header-title mb-0 mt-2 h1 text-transition ${state == 'startup' ? 'text-white' : ''}`}>{signees.toLocaleString()}</h3>
+                  <h5 className="card-header-title mb-4">Help us get to <span className={`text-transition ${state == 'startup' ? 'text-white' : ''}`}>{target.toLocaleString()}</span></h5>
                   <hr></hr>
                   <p><strong>I pledge to fight for human rights. Add my name:</strong></p>
                   {/* Form */}
@@ -207,7 +239,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                           </label>
                         </div>
                       </div>
-                      : null
+                      : <input type="hidden" name="optin" id="optinYes" value="yes" checked readOnly />
                     }
                     { state == "Other error" ?
                         <div className="d-block mt-3 invalid-feedback">We had an issue: <span id="error-text">{error}</span></div>
@@ -217,11 +249,14 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                       <button 
                         type="submit" 
                         className="btn btn-primary btn-lg mb-2 fw-bold" 
-                        disabled={state === 'Loading'}
-                        >
+                        disabled={state === 'Loading'}>
                           Add my name
                       </button>
                     </div>
+                    {step >= 2 ?
+                      <div className={`valid-feedback d-block mb-2  : ''}`}>Signed successfully!</div>
+                      : null
+                    }
                     
                     <p className="form-text">View the Fund for Global Human Right's privacy policy.</p>
                     
