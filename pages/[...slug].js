@@ -8,7 +8,6 @@ import {
 
 export default function Page({ story = null }) {
   story = useStoryblokState(story);
-
   return (
     <>
       <Head>
@@ -16,7 +15,7 @@ export default function Page({ story = null }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <StoryblokComponent blok={story.content} />
+      <StoryblokComponent blok={story.content} slug={story.slug} />
     </>
   );
 }

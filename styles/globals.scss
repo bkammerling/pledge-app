@@ -9,6 +9,16 @@ section  {
   background-size: cover;
 }
 
+@media (max-width: 767.98px) { 
+  .pledge-donate, .pledge-share {
+    background-image: none !important;
+  }  
+}
+
+.progress {
+  height: 1.3rem;
+}
+
 .donate-card, .share-card {
   min-width: 400px;
 }
@@ -67,4 +77,37 @@ section  {
 
 .text-transition {
   transition: color .4s;
+}
+
+.btn-social {
+  color: #ffffff;
+  font-weight: 500;
+  &:hover {
+    color: #ffffff;
+  }  
+  svg {
+    max-height: 18px;
+    margin-right: 10px;
+  }
+}
+
+.btn-fb {
+  background: #3B5998;
+  &:hover  {
+    background: darken(#3B5998, 8%);
+  }
+}
+
+.btn-li {
+  background: #007bb5;
+  &:hover  {
+    background: darken(#007bb5, 8%);
+  }
+}
+
+.btn-wa {
+  background: #25D366;
+  &:hover  {
+    background: darken(#25D366, 8%);
+  }
 }

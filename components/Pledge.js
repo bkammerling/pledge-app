@@ -175,9 +175,12 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                     src={`${blok.image.filename}/m/1600x900/smart`}
                     height={1600}
                     width={900}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
                     className='img-fluid my-3'
                     alt="Orange solid check mark or tick"
                     onClick={afterSuccessfulSign}
+                    placeholder="blur"
+                    blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcNWtKPQAF5wJJEdcOVQAAAABJRU5ErkJggg=='
                   />
                 }
                 { render(blok.content) }
@@ -196,7 +199,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                   <h3 className={`card-header-title mb-0 mt-2 h1 text-transition ${state == 'startup' ? 'text-white' : ''}`}>{signees.toLocaleString()}</h3>
                   <h5 className="card-header-title mb-4">Help us get to <span className={`text-transition ${state == 'startup' ? 'text-white' : ''}`}>{target.toLocaleString()}</span></h5>
                   <hr></hr>
-                  <p><strong>I pledge to fight for human rights. Add my name:</strong></p>
+                  <p><strong>{ blok.form_intro }</strong></p>
                   {/* Form */}
                   <form onSubmit={signPledge} > 
                     <div style={{ display: 'none' }}>
@@ -258,7 +261,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
                       : null
                     }
                     
-                    <p className="form-text">View the Fund for Global Human Right's privacy policy.</p>
+                    <p className="form-text mt-3"><a target="_blank" className="text-muted" href="https://globalhumanrights.org/privacy-policy/">View the Fund for Global Human Right's privacy policy.</a></p>
                     
                   </form>
         
@@ -270,11 +273,11 @@ const Pledge = ({ blok, ipDeets, tag }) => {
         </div>
       {/* END PLEDGE */}
       </section>
-      { step >= 2 ?
+      { step >= 1 ?
         <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
         : null
       }
-      { step >= 3 ?
+      { step >= 1 ?
         <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} />
         : null
       }
