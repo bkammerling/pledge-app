@@ -273,11 +273,11 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
         </div>
       {/* END PLEDGE */}
       </section>
-      { step >= 1 ?
+      { step >= 2 ?
         <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
         : null
       }
-      { step >= 1 ?
+      { step >= 3 ?
         <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} />
         : null
       }
