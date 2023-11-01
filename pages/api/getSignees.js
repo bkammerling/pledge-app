@@ -16,6 +16,7 @@ export default async (req, res) => {
   
   const getSignees = async () => {
     console.log('in get signees');
+    //Use get list segments with filters to get all tags
     try {
       const response = await mailchimp.lists.listSegments("2d457f53b0", {
         "since_created_at": "2023-1-1T15:41:36+00:00",
