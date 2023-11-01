@@ -5,7 +5,7 @@ import { render } from 'storyblok-rich-text-react-renderer';
 import PledgeDonate from './PledgeDonate';
 import PledgeShare from './PledgeShare';
 
-const Pledge = ({ blok, ipDeets, tag }) => {
+const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -278,7 +278,7 @@ const Pledge = ({ blok, ipDeets, tag }) => {
         : null
       }
       { step >= 1 ?
-        <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} />
+        <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} />
         : null
       }
       

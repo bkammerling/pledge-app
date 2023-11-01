@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Script from "next/script";
 import Navigation from "./global/Navigation";
 
-const Page = ({ blok }) => {
+const Page = ({ blok, slug }) => {
   const [userCountry, setUserCountry] = useState({});
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Page = ({ blok }) => {
     <Navigation />
     
     {blok.body.map((nestedBlok) => (
-      <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} ipDeets={userCountry} tag={blok.mailchimp_tag || ""} />
+      <StoryblokComponent blok={nestedBlok} slug={slug} key={nestedBlok._uid} ipDeets={userCountry} tag={blok.mailchimp_tag || ""} />
     ))}
 
   </>
