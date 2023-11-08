@@ -6,7 +6,7 @@ import {
   StoryblokComponent,
 } from "@storyblok/react";
 
-export default function Home({ story = null }) {
+export default function Home({ story = null, linksData = null }) {
   story = useStoryblokState(story);
 
   return (
@@ -17,6 +17,21 @@ export default function Home({ story = null }) {
       </Head>
 
       <StoryblokComponent blok={story.content} />
+      
+      <div className="container col-xxl-8 px-4">
+      { Object.values(linksData).map((linkKey) => {
+        if (linkKey.is_folder || linkKey.slug === "home") {
+          return;
+        }
+        
+        return (
+          <p>
+            <a href={linkKey.real_path}>{linkKey.name}</a>
+          </p>
+        )
+      })}
+      </div>
+
     </>
   );
 }
@@ -32,11 +47,13 @@ export async function getStaticProps(context) {
 
   const storyblokApi = getStoryblokApi();
   let { data } = await storyblokApi.get(`cdn/stories/${slug}`, params);
+  let linksData  = await storyblokApi.get("cdn/links/");
 
   return {
     props: {
       story: data ? data.story : false,
       key: data ? data.story.id : false,
+      linksData: linksData ? linksData.data.links : false,
     }
   };
 }

@@ -34,11 +34,11 @@ const Page = ({ blok, slug }) => {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
 
-        // Default ad_storage to 'denied'.
+        // Default ad_storage to 'granted' as we're US only.
         gtag('consent', 'default', {
-          'analytics_storage': 'denied',
-          'ad_storage': 'denied',
-          'personalization_storage': 'denied',
+          'analytics_storage': 'granted',
+          'ad_storage': 'granted',
+          'personalization_storage': 'granted',
         });
       `}
     </Script>

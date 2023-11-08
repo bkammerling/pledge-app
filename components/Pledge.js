@@ -174,10 +174,9 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                 {blok.image && 
                   <img 
                   src={`${blok.image.filename}/m/1600x900/smart`}
-                  srcSet={`${blok.image.filename}/m/400x225/smart 400w
+                  srcSet={`${blok.image.filename}/m/400x225/smart 400w,
                             ${blok.image.filename}/m/800x450/smart 800w,
-                            ${blok.image.filename}/m/1200x660/smart 1200w,
-                            ${blok.image.filename}/m/1600x900/smart 1600w
+                            ${blok.image.filename}/m/1200x660/smart 1200w
                           `}
                   sizes="(min-width: 992px) 60vw, (min-width: 768px) 400px, (min-width: 576px) 520px, 95vw"
                   className="img-fluid my-3"
