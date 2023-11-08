@@ -10,7 +10,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
     fname: "",
     lname: "",
     email: "",
-    optin: ""
+    optin: blok.show_optin ? "" : "yes"
   });
   const [state, setState] = useState('startup');
   const [signees, setSignees] = useState(0);
@@ -62,8 +62,10 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
 
   const signPledge = async (e) => {  
     e.preventDefault();
-    setState('loading')
-    
+    //setState('loading')
+
+    console.log(formData);
+    /*
     try {
       await fetch("/api/signPetition", { 
         method: "POST", 
@@ -94,6 +96,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
     } catch(e) {
       console.log(e);
     }
+    */
   }
 
   const afterSuccessfulSign = () => {
@@ -205,11 +208,25 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                       <input id="mce-LCAMPAIGN" name="LCAMPAIGN" type="hidden" value={utmCampaign} data-ref="utm_campaign" />
                     </div>
                     <div className="form-floating mb-3">
-                      <input type="text" onChange={(e) => setFormData({...formData, fname: e.target.value})} value={formData.fname} className="form-control" id="fnameInput" placeholder="First name" autoComplete="given-name"  />
+                      <input type="text" 
+                        onChange={(e) => setFormData({...formData, fname: e.target.value})} 
+                        value={formData.fname} 
+                        className="form-control" 
+                        id="fnameInput" 
+                        placeholder="First name" 
+                        autoComplete="given-name"  
+                        required />
                       <label htmlFor="fnameInput">First name</label>
                     </div>
                     <div className="form-floating mb-3">
-                      <input type="text"onChange={(e) => setFormData({...formData, lname: e.target.value})} value={formData.lname} className="form-control" id="lnameInput" placeholder="Last name" autoComplete="family-name"  />
+                      <input type="text"
+                        onChange={(e) => setFormData({...formData, lname: e.target.value})} 
+                        value={formData.lname} 
+                        className="form-control" 
+                        id="lnameInput" 
+                        placeholder="Last name" 
+                        autoComplete="family-name"  
+                        required />
                       <label htmlFor="lnameInput">Last name</label>
                     </div>
                     <div className="form-floating mb-3">
@@ -240,7 +257,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                           </label>
                         </div>
                       </div>
-                      : <input type="hidden" name="optin" id="optinYes" value="yes" checked readOnly />
+                      : null
                     }
                     { state == "error" ?
                         <div className="d-block mt-3 invalid-feedback">Apologies, we had an issue. Please help us and <a target="_blank" href={`mailto:bkammerling@globalhumanrights.org?subject=Pledge%20page%20issue&body=There%20was%20an%20issue%20signing%20the%20pledge. ${encodeURI(error)}`}>report it</a> or you can try again later. <span id="error-text">{error}</span></div>
