@@ -94,20 +94,20 @@ section  {
 .btn-fb {
   background: #3B5998;
   &:hover  {
-    background: darken(#3B5998, 8%);
+    background: darken(#3B5998, 10%);
   }
 }
 
-.btn-li {
-  background: #007bb5;
+.btn-tw {
+  background: #1d1d1d;
   &:hover  {
-    background: darken(#007bb5, 8%);
+    background: lighten(#1d1d1d, 10%);
   }
 }
 
 .btn-wa {
-  background: #25D366;
+  background: #07c14b;
   &:hover  {
-    background: darken(#25D366, 8%);
+    background: darken(#07c14b, 10%);
   }
 }
