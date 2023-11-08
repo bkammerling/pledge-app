@@ -6,7 +6,7 @@ const PledgeShare = ({ innerRef, slug, blok, name }) => {
       <section className="section pledge-share" ref={innerRef} style={{ backgroundImage: `url(${blok.background_img?.filename}/m/1800x0/smart)` }}>
 
         <div className="container">
-          <div className="d-flex flex-column justify-content-center align-items-center py-5 vh-100 text-center">
+          <div className="d-flex flex-column justify-content-center align-items-center py-5 min-vh-100 text-center">
             <div className="card share-card border-0 p-3">
               <div className="card-body">
                 {blok.image && 
