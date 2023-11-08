@@ -9,6 +9,17 @@ const PledgeShare = ({ innerRef, slug, blok, name }) => {
           <div className="d-flex flex-column justify-content-center align-items-center py-5 vh-100 text-center">
             <div className="card share-card border-0 p-3">
               <div className="card-body">
+                {blok.image && 
+                    <img 
+                    src={`${blok.image.filename}/m/800x450/smart`}
+                    srcSet={`${blok.image.filename}/m/200x110/smart 200w
+                              ${blok.image.filename}/m/400x220/smart 400w,
+                            `}
+                    width='250'
+                    height='140'
+                    className="img-fluid mb-3 d-md-none"
+                    />
+                  }
                 <h2>{ name }{ name ? " - " : ""}{ blok.share_heading }</h2>
                 <div className="mt-3 mb-4">
                   { render(blok.share_text) }
