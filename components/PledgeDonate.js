@@ -19,11 +19,11 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
         `}
       </Script>
 
-      <section className="section pledge-donate" ref={innerRef} style={{ backgroundImage: `url(${blok.background_img?.filename}/m/1800x0/smart)` }}>
+      <section className="section pledge-donate border-top border-bottom" ref={innerRef} style={{ backgroundImage: `url(${blok.background_img?.filename}/m/1800x0/smart)` }}>
 
         <div className="container">
           <div className="d-flex flex-column justify-content-center align-items-center py-5 vh-100 text-center">
-            <div className="card donate-card p-3">
+            <div className="card donate-card p-3 border-0">
               <div className="card-body">
                 <h2>{ name }{ name ? " - " : ""}{ blok.donate_heading }</h2>
                 <div className="mt-3 mb-4">

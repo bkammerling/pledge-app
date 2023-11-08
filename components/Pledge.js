@@ -24,7 +24,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const searchParams = useSearchParams()
   const utmSource = searchParams.get('utm_source') || "";
   const utmCampaign = searchParams.get('utm_campaign') || "";
-
+  
   useEffect(() => {
     const getSignees = async () => {
       await fetch("/api/getSignees", { 
@@ -53,7 +53,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
       })    
       .catch(err => { 
         console.log('Request Failed', err)
-        setState('Error')
+        setState('error')
       });   
     }
     getSignees(); 
@@ -63,7 +63,6 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const signPledge = async (e) => {  
     e.preventDefault();
     setState('loading')
-    
     
     try {
       await fetch("/api/signPetition", { 
@@ -78,19 +77,18 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
         console.log(json)
         if(json.message == "Email already signed") {
           setState('Already signed')
-          console.log('yep, already signed');
         } else if(json.message == "Error calling Mailchimp") {
-          setState('Other error')
+          setState('error')
           setError(json.detail);
         } else {
-          setState('Success')
+          setState('success')
           setSignees(signees+1);
           afterSuccessfulSign();
         }
       })    
       .catch(err => { 
         console.log('Request Failed', err)
-        setState('Error')
+        setState('error')
       });   
       
     } catch(e) {
@@ -105,6 +103,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
 
   const afterDonate = () => {
     setStep(3);
+    shareRef.current?.scrollIntoView();
   }
 
   useEffect(() => {
@@ -167,20 +166,19 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
             {/* Col */}
             <div className="col-md-7 mb-9 mb-lg-0">
               {/* Heading and Image */}
-              <div className="mb-5">
+              <div className="mb-4">
                 <h1 className="h2">{blok.title}</h1>
                 {blok.image && 
-                  <Image
-                    priority
-                    src={`${blok.image.filename}/m/1600x900/smart`}
-                    height={1600}
-                    width={900}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
-                    className='img-fluid my-3'
-                    alt="Orange solid check mark or tick"
-                    onClick={afterSuccessfulSign}
-                    placeholder="blur"
-                    blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcNWtKPQAF5wJJEdcOVQAAAABJRU5ErkJggg=='
+                  <img 
+                  src={`${blok.image.filename}/m/1600x900/smart`}
+                  srcSet={`${blok.image.filename}/m/400x225/smart 400w
+                            ${blok.image.filename}/m/800x450/smart 800w,
+                            ${blok.image.filename}/m/1200x660/smart 1200w,
+                            ${blok.image.filename}/m/1600x900/smart 1600w
+                          `}
+                  sizes="(min-width: 992px) 60vw, (min-width: 768px) 400px, (min-width: 576px) 520px, 95vw"
+                  className="img-fluid my-3"
+                  onClick={afterSuccessfulSign}
                   />
                 }
                 { render(blok.content) }
@@ -244,22 +242,23 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                       </div>
                       : <input type="hidden" name="optin" id="optinYes" value="yes" checked readOnly />
                     }
-                    { state == "Other error" ?
-                        <div className="d-block mt-3 invalid-feedback">We had an issue: <span id="error-text">{error}</span></div>
+                    { state == "error" ?
+                        <div className="d-block mt-3 invalid-feedback">Apologies, we had an issue. Please help us and <a target="_blank" href={`mailto:bkammerling@globalhumanrights.org?subject=Pledge%20page%20issue&body=There%20was%20an%20issue%20signing%20the%20pledge. ${encodeURI(error)}`}>report it</a> or you can try again later. <span id="error-text">{error}</span></div>
                         : null
                       }
                     <div className="d-grid gap-2 mt-3">
                       <button 
                         type="submit" 
                         className="btn btn-primary btn-lg mb-2 fw-bold" 
-                        disabled={state === 'Loading'}>
-                          Add my name
+                        disabled={state === 'loading'}>
+                          <span className={`${state === 'loading' ? 'd-none' : 'd-inline-block'}`}>Add my name</span>
+                          <div className={`spinner-border spinner-border-sm ${state === 'loading' ? 'd-inline-block' : 'd-none'}`} aria-hidden="true">
+                            <span role="status" className="visually-hidden">Loading...</span>
+                          </div>
                       </button>
+
                     </div>
-                    {step >= 2 ?
-                      <div className={`valid-feedback d-block mb-2  : ''}`}>Signed successfully!</div>
-                      : null
-                    }
+                    <div className={`valid-feedback mb-2 ${state == 'success' ? 'd-block' : ''}`}>Signed successfully!</div>
                     
                     <p className="form-text mt-3"><a target="_blank" className="text-muted" href="https://globalhumanrights.org/privacy-policy/">View the Fund for Global Human Right's privacy policy.</a></p>
                     
@@ -273,11 +272,11 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
         </div>
       {/* END PLEDGE */}
       </section>
-      { step >= 2 ?
+      { (step >= 2 || searchParams.get("_storyblok_c")) ?
         <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
         : null
       }
-      { step >= 3 ?
+      { (step >= 3 || searchParams.get("_storyblok_c")) ?
         <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} />
         : null
       }

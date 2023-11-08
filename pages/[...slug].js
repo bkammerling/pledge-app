@@ -8,6 +8,7 @@ import {
 
 export default function Page({ story = null }) {
   story = useStoryblokState(story);
+
   return (
     <>
       <Head>
