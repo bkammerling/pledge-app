@@ -29,13 +29,13 @@ export default async (req, res) => {
       });
       if(response.segments) {
         const currentTag = response.segments.find((tagObj) => tagObj.name === tag);
-        return res.status(200).json({ message: 'Got data', signees:  currentTag.member_count || 0 })
+        return res.status(200).json({ message: 'Got data', signees:  currentTag?.member_count || 0 })
       } else {
         return res.status(500).json({ message: 'No segments found'})
       }
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: `Error calling Mailchimp`})
+      return res.status(500).json({ message: `Error calling Mailchimp in getSignees`})
     }
   };  
   getSignees();
