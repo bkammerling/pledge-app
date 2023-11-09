@@ -1,6 +1,6 @@
 import { render } from 'storyblok-rich-text-react-renderer';
 
-const PledgeShare = ({ innerRef, slug, blok, name }) => {
+const PledgeShare = ({ innerRef, slug, blok, name, state }) => {
   return (
     <>
       <section className="section pledge-share" ref={innerRef} style={{ backgroundImage: `url(${blok.background_img?.filename}/m/1800x0/smart)` }}>
@@ -20,7 +20,7 @@ const PledgeShare = ({ innerRef, slug, blok, name }) => {
                     className="img-fluid mb-3 d-md-none"
                     />
                   }
-                <h2>{ name }{ name ? " - " : ""}{ blok.share_heading }</h2>
+                <h2>{ state == "donate success" ? "Thank you so much, " : ""}{ name }{ name ? " - " : ""}{ blok.share_heading }</h2>
                 <div className="mt-3 mb-4">
                   { render(blok.share_text) }
                 </div>

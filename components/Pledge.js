@@ -62,10 +62,9 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
 
   const signPledge = async (e) => {  
     e.preventDefault();
-    //setState('loading')
+    setState('loading')
 
-    console.log(formData);
-    /*
+    
     try {
       await fetch("/api/signPetition", { 
         method: "POST", 
@@ -96,15 +95,21 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
     } catch(e) {
       console.log(e);
     }
-    */
+    
   }
 
   const afterSuccessfulSign = () => {
-
     setStep(2);
+    /* Send Google Event */
+    dataLayer.push({
+      'event': 'pledgeSigned',
+    });
   }
 
-  const afterDonate = () => {
+  const afterDonate = (didDonate = false) => {
+    if(didDonate) {
+      setState('donate success');
+    }
     setStep(3);
     shareRef.current?.scrollIntoView();
   }
@@ -293,7 +298,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
         : null
       }
       { (step >= 3 || searchParams.get("_storyblok_c")) ?
-        <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} />
+        <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} state={state} />
         : null
       }
       

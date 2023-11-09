@@ -1,8 +1,55 @@
 import Script from 'next/script'
-
+import { useEffect } from 'react'
 import { render } from 'storyblok-rich-text-react-renderer';
 
 const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
+
+  const donationSuccess = (donor, donation) => {
+    // Send Google Event for TagManager
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'purchase',
+      ecommerce: {
+        transaction_id: donation.transactionId,
+        currency: donation.currency.name,
+        value: Number(donation.amount),
+        items: [
+          {
+            item_id: donation.formId,
+            item_name: donation.formName,
+            item_category: donation.frequency
+          }
+        ]
+      },
+      country: donor.country,
+      zip: donor.postalCode,
+      form: donation.formName,
+      recurring: donation.recurring,
+      sourceURL: donation.sourceUrl,
+      referrer: document.referrer,
+      transaction_id: donation.transactionId,
+      value: Number(donation.amount),
+    });
+    // 
+    // Setup redirect
+    if(donation.paymentType !== 'undefined') {
+      /*
+      var website = 'https://globalhumanrights.org/donate-success/';
+      var donationAttributes = ['amount', 'formName', 'transactionId' , 'organizationId', 'formId', 'frequency'];
+      var queryParams = '?' + (donationAttributes || []).map(function(attr) { return attr + '=' + encodeURIComponent(donation[attr]) })
+      .join('&');
+      var finalRedirectURL = website + queryParams + '&currency=' + donation.currency.name;
+      window.location = finalRedirectURL;
+      */
+      afterDonate(true);
+    }
+  }
+
+  useEffect(() => {
+    window.funraise.push('onSuccess', { form: 18354 }, donationSuccess);
+  }, []);
+
 
   return (
     <>
@@ -12,13 +59,14 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
       <Script id="funraise-form">
         {`window.funraise.push('create', { form: 18354 });
         window.funraise.push('config', { form: 18354 }, {
+          mode: 'test',
           defaultValues: {
             ask: '5,10,20,50',
           },
         });
         `}
       </Script>
-
+      
       <section className="section pledge-donate border-top border-bottom" ref={innerRef} style={{ backgroundImage: `url(${blok.background_img?.filename}/m/1800x0/smart)` }}>
 
         <div className="container">
