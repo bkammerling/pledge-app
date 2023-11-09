@@ -101,7 +101,8 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const afterSuccessfulSign = () => {
     setStep(2);
     /* Send Google Event */
-    dataLayer.push({
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
       'event': 'pledgeSigned',
     });
   }
