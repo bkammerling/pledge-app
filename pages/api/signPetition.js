@@ -26,7 +26,7 @@ const checkEmail = async (email, tag) => {
 
 export default async (req, res) => {
   const { formData, tag, ipDeets } = req.body;
-
+  
   // Check if email exists
   if (!formData.email || !formData.email.length) {
     return res.status(400).send( 'Email is required')
@@ -48,7 +48,9 @@ export default async (req, res) => {
     merge_fields: {
       FNAME: formData.fname,
       LNAME: formData.lname,
-      COUNTRY: ipDeets.country ? ipDeets.country : ""
+      COUNTRY: ipDeets.country ? ipDeets.country : "",
+      LSOURCE: formData.lsource,
+      LCAMPAIGN: formData.lcampaign
     },
     interests: {
       "13580ba4f1": true,

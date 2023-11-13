@@ -20,12 +20,9 @@ export default function Home({ story = null, linksData = null }) {
       
       <div className="container col-xxl-8 px-4">
       { Object.values(linksData).map((linkKey) => {
-        if (linkKey.is_folder || linkKey.slug === "home") {
-          return;
-        }
-        
+        if (linkKey.is_folder || linkKey.slug === "home") return;
         return (
-          <p>
+          <p key={linkKey.id}>
             <a href={linkKey.real_path}>{linkKey.name}</a>
           </p>
         )

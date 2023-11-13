@@ -1,16 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import Image from 'next/image';
 import { render } from 'storyblok-rich-text-react-renderer';
 import PledgeDonate from './PledgeDonate';
 import PledgeShare from './PledgeShare';
+
 
 const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
     email: "",
-    optin: blok.show_optin ? "" : "yes"
+    optin: blok.show_optin ? "" : "yes",
+    lsource: "",
+    lcampaign: ""
   });
   const [state, setState] = useState('startup');
   const [signees, setSignees] = useState(0);
@@ -21,11 +24,16 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const donateRef = useRef();
   const shareRef = useRef();
 
-  const searchParams = useSearchParams()
-  const utmSource = searchParams.get('utm_source') || "";
-  const utmCampaign = searchParams.get('utm_campaign') || "";
-  
+  const router = useRouter()
+  let searchParams = router.query;
+
   useEffect(() => {
+    // Set utm params on the formdata when the router is ready
+    setFormData({...formData, lcampaign: searchParams.utm_campaign, lsource: searchParams.utm_source}); 
+  } , [router.query])
+
+  useEffect(() => {
+    // Update signee number and bar to the live amount of signees from MC
     const getSignees = async () => {
       await fetch("/api/getSignees", { 
         method: "POST", 
@@ -63,7 +71,6 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const signPledge = async (e) => {  
     e.preventDefault();
     setState('loading')
-
     
     try {
       await fetch("/api/signPetition", { 
@@ -208,10 +215,6 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                   <p><strong>{ blok.form_intro }</strong></p>
                   {/* Form */}
                   <form onSubmit={signPledge} > 
-                    <div style={{ display: 'none' }}>
-                      <input id="mce-LSOURCE" name="LSOURCE" type="hidden" value={utmSource} data-ref="utm_source" />
-                      <input id="mce-LCAMPAIGN" name="LCAMPAIGN" type="hidden" value={utmCampaign} data-ref="utm_campaign" />
-                    </div>
                     <div className="form-floating mb-3">
                       <input type="text" 
                         onChange={(e) => setFormData({...formData, fname: e.target.value})} 
@@ -294,11 +297,11 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
         </div>
       {/* END PLEDGE */}
       </section>
-      { (step >= 2 || searchParams.get("_storyblok_c")) ?
+      { (step >= 2 || searchParams["_storyblok_c"]) ?
         <PledgeDonate innerRef={donateRef} afterDonate={afterDonate} blok={blok} name={formData.fname} />
         : null
       }
-      { (step >= 3 || searchParams.get("_storyblok_c")) ?
+      { (step >= 3 || searchParams["_storyblok_c"]) ?
         <PledgeShare innerRef={shareRef} blok={blok} name={formData.fname} slug={slug} state={state} />
         : null
       }
