@@ -59,7 +59,6 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
       <Script id="funraise-form">
         {`window.funraise.push('create', { form: 18354 });
         window.funraise.push('config', { form: 18354 }, {
-          mode: 'test',
           defaultValues: {
             ask: '5,10,20,50',
           },
