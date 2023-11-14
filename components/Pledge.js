@@ -193,7 +193,6 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                           `}
                   sizes="(min-width: 992px) 60vw, (min-width: 768px) 400px, (min-width: 576px) 520px, 95vw"
                   className="img-fluid my-3"
-                  onClick={afterSuccessfulSign}
                   />
                 }
                 { render(blok.content) }
