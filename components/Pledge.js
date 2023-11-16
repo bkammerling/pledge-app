@@ -44,18 +44,10 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
       })
       .then(response => response.json())  // convert to json
       .then(json => {
-        console.log(json)
         let returnedCount = json.signees;
-        if(returnedCount < 100) {
-          returnedCount = returnedCount+100;
-        } else if(returnedCount >= 900 && returnedCount < 2000) {
-          setTarget(2500);
-        } else if(returnedCount >= 2000 && returnedCount < 4500) {
-          setTarget(5000);
-        } else {
-          setTarget(10000);
-        }
-        
+        returnedCount += 101;
+        const roundTo = returnedCount < 300 ? 50 : returnedCount > 1999 ? 1000 : 100;
+        setTarget(Math.ceil((returnedCount * 1.2) / roundTo) * roundTo);
         setSignees(returnedCount);
         setState('idle');
       })    
@@ -182,7 +174,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
             {/* Col */}
             <div className="col-md-7 mb-9 mb-lg-0">
               {/* Heading and Image */}
-              <div className="mb-4">
+              <div className="mb-2">
                 <h1 className="h2">{blok.title}</h1>
                 {blok.image && 
                   <img 
@@ -195,15 +187,14 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                   className="img-fluid my-3"
                   />
                 }
-                { render(blok.content) }
               </div>
               {/* End Heading */}
             </div>
             {/* End Col */}
             {/* Col */}
-            <div className="col-md-5">
+            <div className="col-md-5 form-column">
               
-              <div className="card">
+              <div className="card mb-3">
                 <div className="card-body">
                   <div className="progress bg-primary p-1">
                     <div className="progress-bar bg-dark" role="progressbar" style={{width: `${(signees / target) * 100}%` }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} />
@@ -292,6 +283,9 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
               </div>
             </div>
             {/* End Col */}
+            <div className="col-md-7 mb-9 mb-lg-0">
+              { render(blok.content) }
+            </div>
           </div>
         </div>
       {/* END PLEDGE */}
