@@ -79,10 +79,10 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
                 <div className="row justify-content-center">
                   <div className="col-sm-8 col-md-6">                    
                     <div className="d-grid gap-3">
-                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="5">Yes, I'lll give $5</button>
-                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="10">Yes, I'lll give $10</button>
-                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="20">Yes, I'lll give $20</button>
-                      <button type="button" onClick={afterDonate} className="btn text-dark btn-link">No thanks, I'll skip</button>
+                      <button id="first-donate-button" type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="5">Yes, I'll give $5</button>
+                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="10">Yes, I'll give $10</button>
+                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="20">Yes, I'll give $20</button>
+                      <button id="skip-donation-button" type="button" onClick={afterDonate} className="btn text-dark btn-link">No thanks, I'll skip</button>
                     </div>
                   </div>
                 </div>
