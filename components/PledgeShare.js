@@ -18,6 +18,7 @@ const PledgeShare = ({ innerRef, slug, blok, name, state }) => {
                     width='250'
                     height='140'
                     className="img-fluid mb-3 d-md-none"
+                    alt={blok.image.alt}
                     />
                   }
                 <h2>{ state == "donate success" ? "Thank you so much, " : ""}{ name }{ name ? " - " : ""}{ blok.share_heading }</h2>
