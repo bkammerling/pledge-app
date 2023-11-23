@@ -55,7 +55,7 @@ const Page = ({ blok, slug }) => {
     <Navigation />
     
     {blok.body.map((nestedBlok) => (
-      <StoryblokComponent blok={nestedBlok} slug={slug} key={nestedBlok._uid} ipDeets={userCountry} tag={blok.mailchimp_tag || ""} />
+      <StoryblokComponent blok={nestedBlok} slug={slug} key={nestedBlok._uid} ipDeets={userCountry} tag={blok.mailchimp_tag || ""} campaign={blok.lead_campaign || ""} />
     ))}
 
   </>

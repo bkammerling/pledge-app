@@ -6,7 +6,7 @@ import PledgeDonate from './PledgeDonate';
 import PledgeShare from './PledgeShare';
 
 
-const Pledge = ({ blok, slug, ipDeets, tag }) => {
+const Pledge = ({ blok, slug, ipDeets, tag, campaign }) => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -30,7 +30,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
 
   useEffect(() => {
     // Set utm params on the formdata when the router is ready
-    setFormData({...formData, lcampaign: searchParams.utm_campaign, lsource: searchParams.utm_source}); 
+    setFormData({...formData, lcampaign: campaign ? campaign : searchParams.utm_campaign, lsource: searchParams.utm_source}); 
   } , [router.query])
 
   useEffect(() => {
