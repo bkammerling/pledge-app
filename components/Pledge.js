@@ -21,6 +21,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
   const [error, setError] = useState('');
   const [step, setStep] = useState(1);
 
+  // Create react Refs to scroll to sections when actions completed
   const donateRef = useRef();
   const shareRef = useRef();
 
@@ -185,6 +186,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
                           `}
                   sizes="(min-width: 992px) 60vw, (min-width: 768px) 400px, (min-width: 576px) 520px, 95vw"
                   className="img-fluid my-3"
+                  alt={blok.image.alt}
                   />
                 }
               </div>
@@ -197,7 +199,7 @@ const Pledge = ({ blok, slug, ipDeets, tag }) => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className="progress bg-primary p-1">
-                    <div className="progress-bar bg-dark" role="progressbar" style={{width: `${(signees / target) * 100}%` }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} />
+                    <div className="progress-bar bg-dark" role="progressbar" aria-label="Number of pledge signers" style={{width: `${(signees / target) * 100}%` }} aria-valuenow={(signees / target) * 100} aria-valuemin={0} aria-valuemax={100} />
                   </div>
                   <h3 className={`card-header-title mb-0 mt-2 h1 text-transition ${state == 'startup' ? 'text-white' : ''}`}>{signees.toLocaleString()}</h3>
                   <h5 className="card-header-title mb-4">Help us get to <span className={`text-transition ${state == 'startup' ? 'text-white' : ''}`}>{target.toLocaleString()}</span></h5>

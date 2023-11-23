@@ -31,17 +31,8 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
       transaction_id: donation.transactionId,
       value: Number(donation.amount),
     });
-    // 
     // Setup redirect
     if(donation.paymentType !== 'undefined') {
-      /*
-      var website = 'https://globalhumanrights.org/donate-success/';
-      var donationAttributes = ['amount', 'formName', 'transactionId' , 'organizationId', 'formId', 'frequency'];
-      var queryParams = '?' + (donationAttributes || []).map(function(attr) { return attr + '=' + encodeURIComponent(donation[attr]) })
-      .join('&');
-      var finalRedirectURL = website + queryParams + '&currency=' + donation.currency.name;
-      window.location = finalRedirectURL;
-      */
       afterDonate(true);
     }
   }
