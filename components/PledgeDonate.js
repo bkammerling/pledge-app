@@ -1,5 +1,6 @@
 import Script from 'next/script'
 import { useEffect } from 'react'
+import { storyblokEditable } from "@storyblok/react";
 import { render } from 'storyblok-rich-text-react-renderer';
 
 const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
@@ -41,6 +42,8 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
     window.funraise.push('onSuccess', { form: 18354 }, donationSuccess);
   }, []);
 
+  const asks = blok.buttons?.map((nestedButton, index) => ( Number(nestedButton.amount) )) || [5,10,20,50];
+  const askString = ([...asks, Math.max(...asks)*2]);
 
   return (
     <>
@@ -51,7 +54,7 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
         {`window.funraise.push('create', { form: 18354 });
         window.funraise.push('config', { form: 18354 }, {
           defaultValues: {
-            ask: '10,20,50,100',
+            ask: '${askString}',
           },
         });
         `}
@@ -70,9 +73,9 @@ const PledgeDonate = ({ innerRef, afterDonate, blok, name }) => {
                 <div className="row justify-content-center">
                   <div className="col-sm-8 col-md-6">                    
                     <div className="d-grid gap-3">
-                      <button id="first-donate-button" type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="10">Yes, I'll give $10</button>
-                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="20">Yes, I'll give $20</button>
-                      <button type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount="50">Yes, I'll give $50</button>
+                      {blok.buttons && blok.buttons.map((nestedButton, index) => (
+                        <button {...storyblokEditable(nestedButton)} id={index==1 ? 'first-donate-button' : null} type="button" className="btn btn-primary fw-semibold" data-formid="18354" data-amount={nestedButton.amount} data-frequency={nestedButton.recurring ? 'm' : 'o'}>{nestedButton.text}</button>
+                      ))}
                       <button id="skip-donation-button" type="button" onClick={afterDonate} className="btn text-dark btn-link">No thanks, I'll skip</button>
                     </div>
                   </div>

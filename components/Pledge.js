@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image';
 import { render } from 'storyblok-rich-text-react-renderer';
+import { storyblokEditable } from "@storyblok/react";
 import PledgeDonate from './PledgeDonate';
 import PledgeShare from './PledgeShare';
 
@@ -169,7 +170,7 @@ const Pledge = ({ blok, slug, ipDeets, tag, campaign }) => {
       {/* END STEPS */}
 
       {/* BEGIN PLEDGE */}
-      <section className="section pledge min-vh-100 py-4">
+      <section className="section pledge min-vh-100 py-4" {...storyblokEditable(blok)}>
         <div className="container mt-4">
           <div className="row">
             {/* Col */}
