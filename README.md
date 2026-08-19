@@ -25,7 +25,12 @@ $  yarn # or npm install - I prefer npm as that's just what I'm using to
 ```
 
 ### 3. Adding the access token and blocks
-Create a new empty Storyblok Space and add the preview token (Settings -> Access Tokens) into in your own ```.env.local``` file under the variable name ```STORYBLOK_API_TOKEN```. NextJS is built with the capability to read from here already. Alternatively, if using Netlify, you can use the Netlify CLI and use 'netlify dev' which will use all of your Netlify environment variables.
+Create a new empty Storyblok Space and add your Storyblok tokens in ```.env.local```:
+
+- `NEXT_PUBLIC_STORYBLOK_API_TOKEN` for the client-side content API token.
+- `STORYBLOK_PREVIEW_SECRET` for `/api/preview` (server-only shared secret with Storyblok preview URL).
+
+Keep `STORYBLOK_PREVIEW_SECRET` private and do not reuse it as a public token. Alternatively, if using Netlify, you can use the Netlify CLI and use 'netlify dev' which will use all of your Netlify environment variables.
 
 ### 4. Final Storyblok setup
 You'll have to set the preview domain in <strong>Storyblok</strong>. The V2 visual editor can only use https URLs, but luckily Storyblok has a good tutorial about [Setting up Dev Servers with HTTPS Proxy On macOS](https://www.storyblok.com/faq/setup-dev-server-https-proxy) which should only take 1-2 mins. Once you've set this up update your preview domain to `https://localhost:3010/`.
