@@ -27,7 +27,7 @@ $  yarn # or npm install - I prefer npm as that's just what I'm using to
 ### 3. Adding the access token and blocks
 Create a new empty Storyblok Space and add your Storyblok tokens in ```.env.local```:
 
-- `NEXT_PUBLIC_STORYBLOK_API_TOKEN` for the client-side content API token.
+- `STORYBLOK_API_TOKEN` (recommended for deployments) or `NEXT_PUBLIC_STORYBLOK_API_TOKEN` for the Storyblok content API token.
 - `STORYBLOK_PREVIEW_SECRET` for `/api/preview` (server-only shared secret with Storyblok preview URL).
 
 Keep `STORYBLOK_PREVIEW_SECRET` private and do not reuse it as a public token. Alternatively, if using Netlify, you can use the Netlify CLI and use 'netlify dev' which will use all of your Netlify environment variables.
