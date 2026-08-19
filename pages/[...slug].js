@@ -1,4 +1,5 @@
 import Head from "next/head";
+import "../lib/storyblok";
 
 import {
   useStoryblokState,
