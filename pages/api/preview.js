@@ -9,7 +9,6 @@ export default async function preview(req, res) {
     const trimmed = value.trim().replace(/^\/+/, "");
     if (!trimmed) return "";
     if (trimmed.includes("..")) return "";
-    if (/[\\:?#[\]@!$&'()*+,;=]/.test(trimmed)) return "";
     if (!/^[a-zA-Z0-9/_-]+$/.test(trimmed)) return "";
     return trimmed;
   };
